@@ -85,7 +85,8 @@ def plotTrips(data: pd.DataFrame, dateRange: Tuple[datetime.datetime, datetime.d
 	leaderCount = len(leaders)
 	days = (dateRange[1] - dateRange[0]).days
 	
-	fig, ax = plt.subplots(figsize=(10+days/33, leaderCount/2))
+	fig, ax = plt.subplots(figsize=(10+days/33, 1 + leaderCount/2.2))
+
 
 	leaderNumber = 1
 	for leaderName in leaders:
@@ -131,4 +132,4 @@ def plotTrips(data: pd.DataFrame, dateRange: Tuple[datetime.datetime, datetime.d
 		print (f"Saving '{fileName}'")
 		plt.savefig(fileName)
 
-	plt.show()
+	#plt.show()

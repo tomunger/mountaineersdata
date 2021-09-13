@@ -9,22 +9,66 @@ from pathlib import Path
 # Set up paths to data directory and report output directory
 #
 dataDirectory = Path(Path.home(), "Documents/mountaineers/kayak-seattle/leaderactivity")
-dataFileName = "Seattle SK Leaders 2018-20v2.csv"
+dataFileName = "SK Leader Activity 2014-2021.csv"
 Branch = 'Seattle'
 reportDirectory = os.path.join(dataDirectory, "reports")
 if not os.path.exists(reportDirectory):
 	os.makedirs(reportDirectory)
 
-tripData, earliestDate, latestDate, labelDateRange = mtnleaderreport.loadData(dataDirectory, dataFileName, branch=Branch)
+
+
+def allActivites(tripdata, roll):
+	range17to19 = (datetime.datetime(2017,1,1), datetime.datetime(2020,1,1))
+	range20to21 = (datetime.datetime(2019,10,1), datetime.datetime(2021, 10,1))	
+	for dr in [range17to19, range20to21]:
+		ds_datedTrips = ds_primaryleader.loc[ (ds_primaryleader[mtnleaderreport.H_START_DATE] >= dr[0]) & 
+					(ds_primaryleader[mtnleaderreport.H_END_DATE] < dr[1]) ]
+		ds_datedTrips.info()
+
+		# All Branch
+		title = f"All Branchs {roll} - {dr[0]:%Y-%m-%d} to {dr[1]:%Y-%m-%d}"
+		print (f"Working on {title}")
+		fileName = os.path.join(reportDirectory, f"{title}.jpg")
+		mtnleaderreport.plotTrips(ds_datedTrips, dr, title, fileName)
+
+		# Individual branches
+		for branch in tripData[mtnleaderreport.H_BRANCH].unique():
+			ds_branch = ds_datedTrips.loc[ds_datedTrips[mtnleaderreport.H_BRANCH] == branch]
+			title = f"{branch} Branch {roll} - {dr[0]:%Y-%m-%d} to {dr[1]:%Y-%m-%d}"
+			print (f"Working on {title}")
+			fileName = os.path.join(reportDirectory, f"{title}.jpg")
+			mtnleaderreport.plotTrips(ds_branch, dr, title, fileName)
+
+
+def clinics(tripData, roll):
+	dr = (datetime.datetime(2020,1,1), datetime.datetime(2021,10,1))
+
+	ds_datedTrips = tripData.loc[ (tripData[mtnleaderreport.H_START_DATE] >= dr[0]) & 
+				(tripData[mtnleaderreport.H_END_DATE] < dr[1]) ]
+	ds_datedTrips.info()
+
+	title = f"All Branchs Instructor {roll} - {dr[0]:%Y-%m-%d} to {dr[1]:%Y-%m-%d}"
+	print (f"Working on {title}")
+	fileName = os.path.join(reportDirectory, f"{title}.jpg")
+	mtnleaderreport.plotTrips(ds_datedTrips, dr, title, fileName)
+
+
+	for branch in tripData[mtnleaderreport.H_BRANCH].unique():
+		ds_branch = ds_datedTrips.loc[ds_datedTrips[mtnleaderreport.H_BRANCH] == branch]
+		title = f"{branch} Branch Instructor {roll} - {dr[0]:%Y-%m-%d} to {dr[1]:%Y-%m-%d}"
+		print (f"Working on {title}")
+		fileName = os.path.join(reportDirectory, f"{title}.jpg")
+		mtnleaderreport.plotTrips(ds_branch, dr, title, fileName)
 
 
 
+tripData, earliestDate, latestDate, labelDateRange = mtnleaderreport.loadData(dataDirectory, dataFileName)
+#tripData.info()
 		
 
-#ds_trips = tripData.loc[tripData[mtnleaderreport.H_ACTIVITY_CATEGORY] == 'Trip']
-title = 'As Primary Leader'
-fileName = os.path.join('.', f"{title}.jpg")
-dateRange = mtnleaderreport.fullMonthRange(earliestDate, latestDate)
-ds_primaryleader = tripData.loc[tripData[mtnleaderreport.H_ACTIVITY_ROLE] == 'Primary leader']
-mtnleaderreport.plotTrips(ds_primaryleader, dateRange, title, fileName)
+roll = 'Primary leader'
+ds_primaryleader = tripData.loc[tripData[mtnleaderreport.H_ACTIVITY_ROLE] == roll]
+allActivites(ds_primaryleader, roll)
 
+#ds_clinics = ds_primaryleader.loc[ (ds_primaryleader[mtnleaderreport.H_ACTIVITY_CATEGORY] == "Clinic") | (ds_primaryleader[mtnleaderreport.H_ACTIVITY_CATEGORY] == "Field Trip") ]
+#clinics(ds_clinics, roll)
