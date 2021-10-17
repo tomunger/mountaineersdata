@@ -72,7 +72,9 @@ def endOfMonth(dt) -> datetime.datetime:
 def fullMonthRange(start,end) -> Tuple[datetime.datetime, datetime.datetime]:
 	return (beginningOfMonth(start), endOfMonth(end))
 
-
+def pdtstodtdt(ts: pd.Timestamp):
+	# Convert a Pandas Timestamp to datetime.datetime.
+	return datetime.datetime(year=ts.year, month=ts.month, day=ts.day, hour=ts.hour, minute=ts.minute, second=ts.second)
 
 
 def plotTrips(data: pd.DataFrame, dateRange: Tuple[datetime.datetime, datetime.datetime], title: str, fileName: str):
