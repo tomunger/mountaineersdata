@@ -135,3 +135,4 @@ def plotTrips(data: pd.DataFrame, dateRange: Tuple[datetime.datetime, datetime.d
 		plt.savefig(fileName)
 
 	#plt.show()
+	plt.close()
