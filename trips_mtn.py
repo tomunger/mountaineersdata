@@ -1,7 +1,7 @@
 '''
 Process a CSV file copied from my mountaineer's activities page.
 
-Required some hand editing.  There are non-standard space charcters which I converted to standard.
+Required some hand editing.  There are non-standard space characters which I converted to standard.
 
 '''
 import pandas as pd
