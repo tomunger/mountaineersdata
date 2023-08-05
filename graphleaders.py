@@ -8,10 +8,10 @@ from pathlib import Path
 #
 # Set up paths to data directory and report output directory
 #
-activity = "hiking"
+activity = "kayaking"
 if activity == "kayaking":
 	dataDirectory = Path(Path.home(), "Documents/mountaineers/kayak-seattle/data/leaderactivity")
-	dataFileName = "SK Leader Activity 2014-2021.csv"
+	dataFileName = "SK Leader Activity-2022-10-05-12-37-20.csv"
 elif activity == "hiking":
 	dataDirectory = Path(Path.home(), "Documents/mountaineers/hiking/data/")
 	dataFileName = "Sea Hike Leader Activity-2021-11-09-09-44-25.csv"
@@ -28,9 +28,9 @@ if not os.path.exists(reportDirectory):
 
 def allActivites(tripdata, roll):
 	range17to19 = (datetime.datetime(2015,1,1), datetime.datetime(2020,1,1))
-	range20to21 = (datetime.datetime(2019,11,1), datetime.datetime(2021, 11,1))	
+	range20to22 = (datetime.datetime(2020,10,1), datetime.datetime(2022, 10,1))	
 	rantepastyear = (datetime.datetime(2020,11,1), datetime.datetime(2021, 11, 11))	
-	for dr in [range17to19, range20to21, rantepastyear]:
+	for dr in [range20to22]:
 		ds_datedTrips = ds_primaryleader.loc[ (ds_primaryleader[mtnleaderreport.H_START_DATE] >= dr[0]) & 
 					(ds_primaryleader[mtnleaderreport.H_END_DATE] < dr[1]) ]
 		ds_datedTrips.info()
